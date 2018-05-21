@@ -1,7 +1,7 @@
 import React from 'react';
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 
-class LogsTable extends React.Component {
+class ErrorsTable extends React.Component {
     render() {
         return (
             <Table>
@@ -13,7 +13,7 @@ class LogsTable extends React.Component {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {this.props.logs.map(entry =>
+                    {this.props.errors.map(entry =>
                         <TableRow key={entry.time}>
                             <TableCell>{entry.time}</TableCell>
                             <TableCell>{entry.message}</TableCell>
@@ -26,4 +26,4 @@ class LogsTable extends React.Component {
     }
 }
 
-export default LogsTable;
+export default ErrorsTable;

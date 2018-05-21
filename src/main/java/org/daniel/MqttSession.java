@@ -57,7 +57,7 @@ public class MqttSession {
                         asyncActionToken.waitForCompletion();
                         log.info(asyncActionToken.getResponse().toString());
                     } catch (MqttException e) {
-                        stompSender.sendLog(id, e);
+                        stompSender.sendError(id, e);
                         e.printStackTrace();
                         mqttService.delete(id);
                     }
@@ -86,7 +86,7 @@ public class MqttSession {
 
                     @Override
                     public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                        stompSender.sendLog(id, exception);
+                        stompSender.sendError(id, exception);
                         updateAndPushConnectionStatus(MqttSessionState.ConnectionStatus.DISCONNECTED);
                     }
                 });
@@ -113,7 +113,7 @@ public class MqttSession {
             });
 
         } catch (MqttException e) {
-            stompSender.sendLog(id, e);
+            stompSender.sendError(id, e);
             e.printStackTrace();
         }
     }

@@ -24,8 +24,8 @@ public class StompSender {
 
     private final SimpMessagingTemplate websocket;
 
-    public void sendLog(UUID sessionId, Throwable e) {
-        this.websocket.convertAndSend("/topic/" + sessionId + "/log", new LogEntry(formatter.format(new Date()),
+    public void sendError(UUID sessionId, Throwable e) {
+        this.websocket.convertAndSend("/topic/" + sessionId + "/error", new LogEntry(formatter.format(new Date()),
                 e.getMessage(), e.getCause() == null ? "" : e.getCause().getClass().getSimpleName() + " - " + e.getCause().getMessage()));
     }
 

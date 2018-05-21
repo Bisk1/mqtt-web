@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ConfigurationForm from './ConfigurationForm';
 import ControlPanel from './ControlPanel';
-import LogsTable from './LogsTable';
+import ErrorsTable from './ErrorsTable';
 import PacketsTable from './PacketsTable';
 import Summary from './Summary';
 import AppBar from 'material-ui/AppBar';
@@ -37,8 +37,8 @@ class MqttPanel extends Component {
         session: {
             connectionStatus: 'DISCONNECTED'
         },
-        logs: [],
-        unreadLogs: 0,
+        errors: [],
+        unreadErrors: 0,
         packets: [],
         unreadPackets: 0,
         activeTab: 0
@@ -48,7 +48,7 @@ class MqttPanel extends Component {
         this.myStompClient = stompClient.register(
             [
                 {route: `/topic/${sessionId}/state`, callback: r => this.handleSessionChange(JSON.parse(r.body))},
-                {route: `/topic/${sessionId}/log`, callback: r => this.handleNewLogEntry(JSON.parse(r.body))},
+                {route: `/topic/${sessionId}/errors`, callback: r => this.handleNewError(JSON.parse(r.body))},
                 {route: `/topic/${sessionId}/packets`, callback: r => this.handleNewPacket(JSON.parse(r.body))}
             ]);
     };
@@ -82,11 +82,11 @@ class MqttPanel extends Component {
         });
     };
 
-    handleNewLogEntry = entry => {
-        const unreadLogs = this.isLogsTabActive() ? 0 : this.state.unreadLogs + 1;
+    handleNewError = entry => {
+        const unreadErrors = this.isLogsTabActive() ? 0 : this.state.unreadErrors + 1;
         this.setState({
-            logs:[entry].concat(this.state.logs),
-            unreadLogs: unreadLogs
+            errors:[entry].concat(this.state.errors),
+            unreadErrors: unreadErrors
         });
     };
 
@@ -119,11 +119,11 @@ class MqttPanel extends Component {
 
     handleTabChange = (event, value) => {
         const activeTab = value;
-        const unreadLogs = this.isLogsTabActive(activeTab) ? 0 : this.state.unreadLogs;
+        const unreadLogs = this.isLogsTabActive(activeTab) ? 0 : this.state.unreadErrors;
         const unreadPackets = this.isPacketsTabActive(activeTab) ? 0 : this.state.unreadPackets;
         this.setState({
             activeTab: activeTab,
-            unreadLogs: unreadLogs,
+            unreadErrors: unreadLogs,
             unreadPackets: unreadPackets
         });
     };
@@ -132,20 +132,14 @@ class MqttPanel extends Component {
         const activeTab = this.state.activeTab;
         return (
             <div className="App">
-                <ControlPanel
-                    session={this.state.session}
-                    onConnect={this.handleConnect}
-                    onDisconnect={this.handleDisconnect}/>
-                <Summary
-                    session={this.state.session}/>
                 <AppBar position="static">
                     <Tabs value={activeTab} onChange={this.handleTabChange}>
                         <Tab label="Configuration" />
-                        <Tab label={this.state.unreadLogs > 0 ?
-                            <Badge color="secondary" badgeContent={this.state.unreadLogs}>
+                        <Tab label={this.state.unreadErrors > 0 ?
+                            <Badge color="secondary" badgeContent={this.state.unreadErrors}>
                                 Logs
                             </Badge>
-                            : "Logs"
+                            : "Errors"
                         }
                         />
                         <Tab label={this.state.unreadPackets > 0 ?
@@ -156,10 +150,16 @@ class MqttPanel extends Component {
                         } />
                     </Tabs>
                 </AppBar>
+                <ControlPanel
+                    session={this.state.session}
+                    onConnect={this.handleConnect}
+                    onDisconnect={this.handleDisconnect}/>
+                <Summary
+                    session={this.state.session}/>
                 {activeTab === 0 && <ConfigurationForm
                     config={this.state.config}
                     onChange={this.handleChange('config')}/>}
-                {activeTab === 1 && <LogsTable logs={this.state.logs} />}
+                {activeTab === 1 && <ErrorsTable errors={this.state.errors} />}
                 {activeTab === 2 && <PacketsTable packets={this.state.packets} />}
             </div>
         );

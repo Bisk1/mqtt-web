@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -40,7 +41,7 @@ public class MqttService {
     }
 
     private MqttSession createMqttSession(UUID sessionId, MqttConfig config) {
-        validateClientId(config.getClientId());
+        validate(config);
         String broker = config.getProtocol() + "://" + config.getBroker() + ":" + config.getPort();
         String clientId = config.getClientId();
         MemoryPersistence persistence = new MemoryPersistence();
@@ -55,12 +56,15 @@ public class MqttService {
         }
     }
 
-    private void validateClientId(String clientId) {
-        if (clientId == null) {
-            throw new IllegalArgumentException("Client ID must not be null");
+    private void validate(MqttConfig config) {
+        if (StringUtils.isEmpty(config.getClientId())) {
+            throw new IllegalArgumentException("Client ID must not be empty");
         }
-        if (!CLIENT_ID_ALLOWED_CHARS.matcher(clientId).matches()) {
-            throw new IllegalArgumentException("Client ID: '" + clientId + "' contains invalid characters, only " + CLIENT_ID_ALLOWED_CHARS.toString() + " allowed");
+        if (!CLIENT_ID_ALLOWED_CHARS.matcher(config.getClientId()).matches()) {
+            throw new IllegalArgumentException("Client ID: '" + config.getClientId() + "' contains invalid characters, only " + CLIENT_ID_ALLOWED_CHARS.toString() + " allowed");
+        }
+        if (StringUtils.isEmpty(config.getBroker())) {
+            throw new IllegalArgumentException("Broker address must not be empty");
         }
     }
 
