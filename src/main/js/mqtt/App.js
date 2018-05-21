@@ -17,9 +17,6 @@ class App extends Component {
                     {/*<img src={akamai} className="App-logo" alt="akamai" />*/}
                     <h1 className="App-title">MQTT Assistant</h1>
                 </header>
-                {/*<p className="App-intro">*/}
-                    {/*MQTT Assistant*/}
-                {/*</p>*/}
                 <MqttPanel/>
             </div>
         );
