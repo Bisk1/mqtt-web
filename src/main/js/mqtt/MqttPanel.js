@@ -14,14 +14,6 @@ const stompClient = require('../websocket-listener');
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-function TabContainer(props) {
-    return (
-        <Typography component="div" style={{ padding: 8 * 3 }}>
-            {props.children}
-        </Typography>
-    );
-}
-
 class MqttPanel extends Component {
 
     state = {
@@ -159,8 +151,8 @@ class MqttPanel extends Component {
                 {activeTab === 0 && <ConfigurationForm
                     config={this.state.config}
                     onChange={this.handleChange('config')}/>}
-                {activeTab === 1 && <ErrorsTable errors={this.state.errors} />}
-                {activeTab === 2 && <PacketsTable packets={this.state.packets} />}
+                {activeTab === 1 && <PacketsTable packets={this.state.packets} />}
+                {activeTab === 2 && <ErrorsTable errors={this.state.errors} />}
             </div>
         );
     }

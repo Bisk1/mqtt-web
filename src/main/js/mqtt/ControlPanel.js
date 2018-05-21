@@ -4,12 +4,11 @@ import Grid from 'material-ui/Grid';
 import {withStyles} from 'material-ui/styles';
 
 const style = {
-    textField: {
-        margin: 12,
-        minWidth: '12em'
-    },
     button: {
         margin: 6
+    },
+    gridContainer: {
+        justifyContent: 'center'
     }
 };
 
@@ -31,7 +30,7 @@ class ControlPanel extends React.Component {
         const { classes } = this.props;
 
         return (
-                <Grid container>
+                <Grid container className={classes.gridContainer}>
                     <Grid item>
                         <Button
                             className={classes.button}

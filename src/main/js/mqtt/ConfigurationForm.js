@@ -9,16 +9,13 @@ import { withStyles } from 'material-ui/styles';
 import { FormControl, FormControlLabel } from 'material-ui/Form';
 
 const style = {
-    select: {
+    formControl: {
         margin: 12,
         minWidth: '12em'
     },
     textField: {
         margin: 12,
         minWidth: '12em'
-    },
-    button: {
-        margin: 6
     }
 };
 
