@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
-import MqttPanel from './mqtt/MqttPanel';
-import logo from './logo/react.svg';
-import mqttorg from './logo/mqttorg.svg';
-import akamai from './logo/akamai.svg';
+import MqttPanel from './MqttPanel';
+import logo from '../logo/react.svg';
+import mqttorg from '../logo/mqttorg.svg';
+import akamai from '../logo/akamai.svg';
 
 class App extends Component {
 

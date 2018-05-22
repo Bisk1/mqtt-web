@@ -6,11 +6,10 @@ import PacketsTable from './PacketsTable';
 import Summary from './Summary';
 import AppBar from 'material-ui/AppBar';
 import Tabs, { Tab } from 'material-ui/Tabs';
-import Typography from 'material-ui/Typography';
 import Badge from 'material-ui/Badge';
 
 const axios = require('axios');
-const stompClient = require('../websocket-listener');
+const stompClient = require('../utils/websocket-listener');
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
